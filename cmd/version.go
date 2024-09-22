@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	
-	"github.com/gkwa/wholeoverride/version"
+
 	"github.com/spf13/cobra"
+
+	"github.com/gkwa/wholeoverride/version"
 )
 
 var versionCmd = &cobra.Command{

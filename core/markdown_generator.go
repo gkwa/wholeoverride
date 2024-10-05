@@ -100,7 +100,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 	}
 
 	toc := generateTOC(recipes)
-	content = "# Top\n\n" + toc + "\n\n" + content
+	content = "# TOC\n\n" + toc + "\n\n" + content
 
 	outputPath := filepath.Join(baseDir, "recipeindex.md")
 	err = WriteFile(logger, outputPath, []byte(content))

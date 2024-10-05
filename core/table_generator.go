@@ -38,5 +38,5 @@ func (g *TableMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeI
 			creatorImage, creator.Name))
 	}
 
-	return strings.Join(tableRows, "\n") + "\n\n[Go to top](#top)\n", nil
+	return strings.Join(tableRows, "\n") + "\n\n[Back to top](#top)\n", nil
 }

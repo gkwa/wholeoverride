@@ -21,8 +21,10 @@ func FindMarkdownFiles(logger logr.Logger, baseDir string) ([]string, error) {
 		logger.V(2).Info("Encountered file", "path", path, "isDir", info.IsDir())
 
 		if info.IsDir() {
-			if strings.Contains(strings.ToLower(path), ".git") || strings.Contains(strings.ToLower(path), ".trash") {
-				logger.V(2).Info("Skipping directory", "path", path, "reason", "contains .git or .trash")
+			if strings.Contains(strings.ToLower(path), ".git") ||
+				strings.Contains(strings.ToLower(path), ".trash") {
+				logger.V(2).
+					Info("Skipping directory", "path", path, "reason", "contains .git or .trash")
 				return filepath.SkipDir
 			}
 			return nil

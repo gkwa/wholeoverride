@@ -19,7 +19,9 @@ func NewGoldmarkFrontmatterParser() *GoldmarkFrontmatterParser {
 	return &GoldmarkFrontmatterParser{}
 }
 
-func (gfp *GoldmarkFrontmatterParser) Extract(content []byte) (map[string]interface{}, []byte, error) {
+func (gfp *GoldmarkFrontmatterParser) Extract(
+	content []byte,
+) (map[string]interface{}, []byte, error) {
 	markdown := goldmark.New(goldmark.WithExtensions(meta.Meta))
 	context := parser.NewContext()
 	reader := text.NewReader(content)

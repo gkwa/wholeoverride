@@ -43,9 +43,11 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.wholeoverride.yaml)")
+	rootCmd.PersistentFlags().
+		StringVar(&cfgFile, "config", "", "config file (default is $HOME/.wholeoverride.yaml)")
 	rootCmd.PersistentFlags().CountVarP(&verbose, "verbose", "v", "increase output verbosity")
-	rootCmd.PersistentFlags().StringVar(&logFormat, "log-format", "", "json or text (default is text)")
+	rootCmd.PersistentFlags().
+		StringVar(&logFormat, "log-format", "", "json or text (default is text)")
 
 	if err := viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose")); err != nil {
 		fmt.Printf("Error binding verbose flag: %v\n", err)

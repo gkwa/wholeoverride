@@ -2,111 +2,43 @@ package core
 
 import (
 	"fmt"
-	"path/filepath"
 	"sort"
 	"strings"
 
 	"github.com/go-logr/logr"
 )
 
-type TableRow struct {
-	RecipeImage  string
-	RecipeTitle  string
-	CreatorImage string
-	CreatorName  string
+type TableMarkdownGenerator struct{}
+
+func NewTableMarkdownGenerator() *TableMarkdownGenerator {
+	return &TableMarkdownGenerator{}
 }
 
-func GenerateTable(logger logr.Logger, baseDir string) error {
-	logger.V(1).Info("Starting table generation", "baseDir", baseDir)
+func (g *TableMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeInfo, creators map[string]*CreatorInfo) (string, error) {
+	var tableRows []string
+	tableRows = append(tableRows, "| Recipe Image and Title | Creator's Image |")
+	tableRows = append(tableRows, "|------------------------|-----------------|")
 
-	files, err := FindMarkdownFiles(logger, baseDir)
-	if err != nil {
-		return fmt.Errorf("error finding markdown files: %w", err)
-	}
+	sort.Slice(recipes, func(i, j int) bool {
+		return strings.ToLower(recipes[i].Title) < strings.ToLower(recipes[j].Title)
+	})
 
-	logger.Info("Found markdown files", "count", len(files))
-
-	var tableRows []TableRow
-	processedCount := 0
-	skippedCount := 0
-
-	for _, file := range files {
-		logger.V(1).Info("Processing file", "file", file)
-
-		recipe, err := ParseRecipeFile(logger, file)
-		if err != nil {
-			logger.Error(err, "Failed to parse recipe file, skipping", "file", file)
-			skippedCount++
+	for _, recipe := range recipes {
+		creator, ok := creators[recipe.Creator]
+		if !ok {
+			logger.V(1).Info("Creator not found", "creator", recipe.Creator)
 			continue
 		}
-		if recipe == nil {
-			logger.V(2).Info("Skipping non-recipe file", "file", file)
-			skippedCount++
-			continue
-		}
-
-		logger.V(1).Info("Parsed recipe file", "title", recipe.Title, "creator", recipe.Creator)
-
-		if recipe.Creator == "" {
-			logger.V(2).Info("Skipping recipe with no creator", "file", file)
-			skippedCount++
-			continue
-		}
-
-		creator, err := ParseCreatorFile(logger, baseDir, recipe.Creator)
-		if err != nil {
-			logger.Error(err, "Failed to parse creator file, skipping", "creator", recipe.Creator)
-			skippedCount++
-			continue
-		}
-
-		logger.V(1).Info("Parsed creator file", "name", creator.Name)
 
 		recipeImage := formatImage(recipe.Title, recipe.ImageURL, recipe.IsRemoteImage)
 		creatorImage := formatImage(creator.Name, creator.ImageURL, creator.IsRemoteImage)
 
-		tableRows = append(tableRows, TableRow{
-			RecipeImage:  recipeImage,
-			RecipeTitle:  recipe.Title,
-			CreatorImage: creatorImage,
-			CreatorName:  creator.Name,
-		})
-
-		logger.V(1).Info("Added row to table", "recipe", recipe.Title, "creator", creator.Name)
-		processedCount++
+		tableRows = append(tableRows, fmt.Sprintf("| %s [[%s]] | %s [[%s]] |",
+			recipeImage, recipe.Title,
+			creatorImage, creator.Name))
 	}
 
-	// Sort tableRows by creator name (case-insensitive)
-	sort.Slice(tableRows, func(i, j int) bool {
-		return strings.ToLower(tableRows[i].CreatorName) < strings.ToLower(tableRows[j].CreatorName)
-	})
-
-	// Generate the final sorted table
-	var finalTableRows []string
-	finalTableRows = append(finalTableRows, "| Recipe Image and Title | Creator's Image |")
-	finalTableRows = append(finalTableRows, "|------------------------|-----------------|")
-
-	for _, row := range tableRows {
-		finalTableRows = append(finalTableRows, fmt.Sprintf("| %s [[%s]] | %s [[%s]] |",
-			row.RecipeImage, row.RecipeTitle,
-			row.CreatorImage, row.CreatorName))
-	}
-
-	logger.Info("Table generation summary",
-		"totalFiles", len(files),
-		"processedFiles", processedCount,
-		"skippedFiles", skippedCount,
-		"tableRows", len(tableRows))
-
-	table := strings.Join(finalTableRows, "\n")
-	outputPath := filepath.Join(baseDir, "recipeindex.md")
-	err = WriteFile(logger, outputPath, []byte(table))
-	if err != nil {
-		return fmt.Errorf("error writing output file: %w", err)
-	}
-
-	logger.V(1).Info("Table generation completed", "outputFile", outputPath)
-	return nil
+	return strings.Join(tableRows, "\n"), nil
 }
 
 func formatImage(name, url string, isRemote bool) string {

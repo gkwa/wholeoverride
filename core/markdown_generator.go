@@ -3,6 +3,8 @@ package core
 import (
 	"fmt"
 	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/go-logr/logr"
 )
@@ -97,6 +99,9 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 		return fmt.Errorf("error generating markdown: %w", err)
 	}
 
+	toc := generateTOC(recipes)
+	content = "# Top\n\n" + toc + "\n\n" + content
+
 	outputPath := filepath.Join(baseDir, "recipeindex.md")
 	err = WriteFile(logger, outputPath, []byte(content))
 	if err != nil {
@@ -105,4 +110,13 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 
 	logger.V(1).Info("Markdown generation completed", "outputFile", outputPath)
 	return nil
+}
+
+func generateTOC(recipes []*RecipeInfo) string {
+	var toc []string
+	for _, recipe := range recipes {
+		toc = append(toc, fmt.Sprintf("- [[#%s|%s]]", recipe.Title, recipe.Title))
+	}
+	sort.Strings(toc)
+	return strings.Join(toc, "\n")
 }

@@ -38,12 +38,5 @@ func (g *TableMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeI
 			creatorImage, creator.Name))
 	}
 
-	return strings.Join(tableRows, "\n"), nil
-}
-
-func formatImage(name, url string, isRemote bool) string {
-	if isRemote {
-		return fmt.Sprintf("![%s](%s)", name, url)
-	}
-	return fmt.Sprintf("![[%s]]", url)
+	return strings.Join(tableRows, "\n") + "\n\n[Go to top](#top)\n", nil
 }

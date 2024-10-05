@@ -31,12 +31,22 @@ func (g *SectionMarkdownGenerator) Generate(logger logr.Logger, recipes []*Recip
 		recipeImage := formatImage(recipe.Title, recipe.ImageURL, recipe.IsRemoteImage)
 		creatorImage := formatImage(creator.Name, creator.ImageURL, creator.IsRemoteImage)
 
-		section := fmt.Sprintf("## %s\n\n%s\n\nRecipe: [[%s]]\n\nCreator: %s [[%s]]\n",
+		section := fmt.Sprintf(`## %s
+
+[Back to top](#top)
+
+
+| Image | Creator |
+|-|-|
+| %s | %s [[%s]] |
+[[%s]]
+
+`,
 			recipe.Title,
 			recipeImage,
-			recipe.Title,
 			creatorImage,
-			creator.Name)
+			creator.Name,
+			recipe.Title)
 
 		sections = append(sections, section)
 	}

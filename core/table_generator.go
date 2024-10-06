@@ -14,7 +14,11 @@ func NewTableMarkdownGenerator() *TableMarkdownGenerator {
 	return &TableMarkdownGenerator{}
 }
 
-func (g *TableMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeInfo, creators map[string]*CreatorInfo) (string, error) {
+func (g *TableMarkdownGenerator) Generate(
+	logger logr.Logger,
+	recipes []*RecipeInfo,
+	creators map[string]*CreatorInfo,
+) (string, error) {
 	var tableRows []string
 	tableRows = append(tableRows, "| Recipe Image and Title | Creator's Image |")
 	tableRows = append(tableRows, "|------------------------|-----------------|")

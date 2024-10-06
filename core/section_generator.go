@@ -14,7 +14,11 @@ func NewSectionMarkdownGenerator() *SectionMarkdownGenerator {
 	return &SectionMarkdownGenerator{}
 }
 
-func (g *SectionMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeInfo, creators map[string]*CreatorInfo) (string, error) {
+func (g *SectionMarkdownGenerator) Generate(
+	logger logr.Logger,
+	recipes []*RecipeInfo,
+	creators map[string]*CreatorInfo,
+) (string, error) {
 	var sections []string
 
 	sort.Slice(recipes, func(i, j int) bool {

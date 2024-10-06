@@ -117,6 +117,10 @@ func generateTOC(recipes []*RecipeInfo) string {
 	for _, recipe := range recipes {
 		toc = append(toc, fmt.Sprintf("- [[#%s|%s]]", recipe.Title, recipe.Title))
 	}
-	sort.Strings(toc)
+
+	sort.Slice(toc, func(i, j int) bool {
+		return strings.ToLower(toc[i]) < strings.ToLower(toc[j])
+	})
+
 	return strings.Join(toc, "\n")
 }

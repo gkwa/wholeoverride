@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
-	"github.com/google/uuid"
+	"github.com/gosimple/slug"
 )
 
 type MarkdownGenerator interface {
@@ -85,9 +85,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 			creators[recipe.Creator] = creator
 		}
 
-		if recipe.UUID == "" {
-			recipe.UUID = uuid.New().String()
-		}
+		recipe.UUID = slug.Make(recipe.Title)
 
 		recipes = append(recipes, recipe)
 		processedCount++

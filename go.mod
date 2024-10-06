@@ -9,7 +9,7 @@ require (
 	github.com/go-logr/zapr v1.3.0
 	github.com/go-logr/zerologr v1.2.3
 	github.com/google/go-containerregistry v0.20.2
-	github.com/google/uuid v1.6.0
+	github.com/gosimple/slug v1.14.0
 	github.com/magefile/mage v1.15.0
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/cobra v1.8.1
@@ -31,6 +31,7 @@ require (
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect

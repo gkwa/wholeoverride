@@ -17,7 +17,7 @@ func TestSectionMarkdownGenerator_Generate(t *testing.T) {
 			ImageURL:      "test.jpg",
 			Creator:       "Test Creator",
 			IsRemoteImage: true,
-			UUID:          "test-uuid-1234",
+			UUID:          "test-recipe",
 		},
 	}
 
@@ -34,17 +34,18 @@ func TestSectionMarkdownGenerator_Generate(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
-	expectedTOCLink := "[[#^test-uuid-1234|toc]]"
+	expectedTOCLink := "[[#^test-recipe|toc]]"
 	if !strings.Contains(result, expectedTOCLink) {
 		t.Errorf("Expected TOC link %s not found in result", expectedTOCLink)
 	}
 
-	expectedSection := `## [[Test Recipe]]
-[[#^test-uuid-1234|toc]]
+	expectedSection := `## Test Recipe
+[[#^test-recipe|toc]]
 
-| Image | Creator |
+| [[Test Recipe]] | [[Test Creator]] |
 |-|-|
-| ![Test Recipe](test.jpg) | ![[creator.jpg]] [[Test Creator]] |
+| ![Test Recipe](test.jpg)  | ![[creator.jpg]]  |
+
 `
 	if !strings.Contains(result, expectedSection) {
 		t.Errorf("Expected section not found in result. Got:\n%s", result)

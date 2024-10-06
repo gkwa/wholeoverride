@@ -33,8 +33,8 @@ func (g *TableMarkdownGenerator) Generate(logger logr.Logger, recipes []*RecipeI
 		recipeImage := formatImage(recipe.Title, recipe.ImageURL, recipe.IsRemoteImage)
 		creatorImage := formatImage(creator.Name, creator.ImageURL, creator.IsRemoteImage)
 
-		tableRows = append(tableRows, fmt.Sprintf("| %s [[%s]] | %s [[%s]] |",
-			recipeImage, recipe.Title,
+		tableRows = append(tableRows, fmt.Sprintf("| %s [[%s]] [[#^%s|toc]]** | %s [[%s]] |",
+			recipeImage, recipe.Title, recipe.UUID,
 			creatorImage, creator.Name))
 	}
 

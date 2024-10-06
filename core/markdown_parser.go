@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
+	"github.com/google/uuid"
 	"github.com/yuin/goldmark"
 	meta "github.com/yuin/goldmark-meta"
 	"github.com/yuin/goldmark/parser"
@@ -18,6 +19,7 @@ type RecipeInfo struct {
 	ImageURL      string
 	Creator       string
 	IsRemoteImage bool
+	UUID          string
 }
 
 type CreatorInfo struct {
@@ -63,6 +65,7 @@ func ParseRecipeFile(logger logr.Logger, path string) (*RecipeInfo, error) {
 		ImageURL:      pic,
 		Creator:       strings.Trim(creator, "[]"),
 		IsRemoteImage: isRemoteImage,
+		UUID:          uuid.New().String(),
 	}, nil
 }
 

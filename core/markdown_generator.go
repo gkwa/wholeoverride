@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
+	"github.com/google/uuid"
 )
 
 type MarkdownGenerator interface {
@@ -84,6 +85,10 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 			creators[recipe.Creator] = creator
 		}
 
+		if recipe.UUID == "" {
+			recipe.UUID = uuid.New().String()
+		}
+
 		recipes = append(recipes, recipe)
 		processedCount++
 	}
@@ -100,7 +105,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 	}
 
 	toc := generateTOC(recipes)
-	content = "# TOC\n\n" + toc + "\n\n" + content
+	content = "# TOC\n" + toc + "\n" + content
 
 	outputPath := filepath.Join(baseDir, "recipeindex.md")
 	err = WriteFile(logger, outputPath, []byte(content))
@@ -115,7 +120,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 func generateTOC(recipes []*RecipeInfo) string {
 	var toc []string
 	for _, recipe := range recipes {
-		toc = append(toc, fmt.Sprintf("- [[#%s|%s]]", recipe.Title, recipe.Title))
+		toc = append(toc, fmt.Sprintf("- [[#%s|%s]] ^%s", recipe.Title, recipe.Title, recipe.UUID))
 	}
 
 	sort.Slice(toc, func(i, j int) bool {

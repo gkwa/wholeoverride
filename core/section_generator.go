@@ -32,9 +32,7 @@ func (g *SectionMarkdownGenerator) Generate(logger logr.Logger, recipes []*Recip
 		creatorImage := formatImage(creator.Name, creator.ImageURL, creator.IsRemoteImage)
 
 		section := fmt.Sprintf(`## [[%s]]
-
-[Back to top](#toc)
-
+[[#^%s|toc]]
 
 | Image | Creator |
 |-|-|
@@ -42,6 +40,7 @@ func (g *SectionMarkdownGenerator) Generate(logger logr.Logger, recipes []*Recip
 
 `,
 			recipe.Title,
+			recipe.UUID,
 			recipeImage,
 			creatorImage,
 			creator.Name,

@@ -18,7 +18,7 @@ type RecipeInfo struct {
 	ImageURL      string
 	Creator       string
 	IsRemoteImage bool
-	UUID          string
+	Slug          string
 }
 
 type CreatorInfo struct {

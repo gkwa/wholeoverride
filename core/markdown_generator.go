@@ -85,7 +85,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 			creators[recipe.Creator] = creator
 		}
 
-		recipe.UUID = slug.Make(recipe.Title)
+		recipe.Slug = slug.Make(recipe.Title)
 
 		recipes = append(recipes, recipe)
 		processedCount++
@@ -118,7 +118,7 @@ func GenerateMarkdown(logger logr.Logger, baseDir string, generator MarkdownGene
 func generateTOC(recipes []*RecipeInfo) string {
 	var toc []string
 	for _, recipe := range recipes {
-		toc = append(toc, fmt.Sprintf("- [[#%s|%s]] ^%s", recipe.Title, recipe.Title, recipe.UUID))
+		toc = append(toc, fmt.Sprintf("- [[#%s|%s]] ^%s", recipe.Title, recipe.Title, recipe.Slug))
 	}
 
 	sort.Slice(toc, func(i, j int) bool {

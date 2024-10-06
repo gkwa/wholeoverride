@@ -38,7 +38,7 @@ func (g *TableMarkdownGenerator) Generate(
 		creatorImage := formatImage(creator.Name, creator.ImageURL, creator.IsRemoteImage)
 
 		tableRows = append(tableRows, fmt.Sprintf("| %s [[%s]] [[#^%s|toc]]** | %s [[%s]] |",
-			recipeImage, recipe.Title, recipe.UUID,
+			recipeImage, recipe.Title, recipe.Slug,
 			creatorImage, creator.Name))
 	}
 

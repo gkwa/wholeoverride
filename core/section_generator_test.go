@@ -17,7 +17,7 @@ func TestSectionMarkdownGenerator_Generate(t *testing.T) {
 			ImageURL:      "test.jpg",
 			Creator:       "Test Creator",
 			IsRemoteImage: true,
-			UUID:          "test-recipe",
+			Slug:          "test-recipe",
 		},
 	}
 

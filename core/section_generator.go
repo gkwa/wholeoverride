@@ -44,7 +44,7 @@ func (g *SectionMarkdownGenerator) Generate(
 
 `,
 			recipe.Title,
-			recipe.UUID,
+			recipe.Slug,
 			recipe.Title,
 			creator.Name,
 			recipeImage,

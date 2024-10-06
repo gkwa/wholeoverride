@@ -1,6 +1,8 @@
 package core
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +17,7 @@ func FindMarkdownFiles(logger logr.Logger, baseDir string) ([]string, error) {
 	err := filepath.Walk(baseDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			logger.Error(err, "Error accessing path", "path", path)
-			return nil // Continue to next file instead of stopping
+			return nil
 		}
 
 		logger.V(2).Info("Encountered file", "path", path, "isDir", info.IsDir())
@@ -65,11 +67,27 @@ func ReadFile(logger logr.Logger, path string) ([]byte, error) {
 }
 
 func WriteFile(logger logr.Logger, path string, content []byte) error {
-	err := os.WriteFile(path, content, 0o644)
+	existingContent, err := ReadFile(logger, path)
+	if err == nil {
+		existingDigest := calculateDigest(existingContent)
+		newDigest := calculateDigest(content)
+
+		if existingDigest == newDigest {
+			logger.V(1).Info("File content unchanged, skipping write", "path", path)
+			return nil
+		}
+	}
+
+	err = os.WriteFile(path, content, 0o644)
 	if err != nil {
 		logger.Error(err, "Failed to write file", "path", path)
 	} else {
 		logger.V(2).Info("File written successfully", "path", path, "size", len(content))
 	}
 	return err
+}
+
+func calculateDigest(content []byte) string {
+	hash := sha256.Sum256(content)
+	return hex.EncodeToString(hash[:])
 }

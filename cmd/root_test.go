@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gkwa/wholeoverride/internal/logger"
 	"github.com/go-logr/zapr"
@@ -65,8 +66,12 @@ func TestJSONLogger(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 
+	// Close the writer and restore stderr before reading
 	w.Close()
 	os.Stderr = oldStderr
+
+	// Give a small delay to ensure all output is flushed
+	time.Sleep(10 * time.Millisecond)
 
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, r)
@@ -80,12 +85,22 @@ func TestJSONLogger(t *testing.T) {
 	}
 
 	lines := strings.Split(strings.TrimSpace(logOutput), "\n")
+	validJSONLines := 0
 	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
 		var jsonMap map[string]interface{}
 		err := json.Unmarshal([]byte(line), &jsonMap)
 		if err != nil {
-			t.Errorf("Expected valid JSON, but got error: %v", err)
+			t.Errorf("Expected valid JSON, but got error: %v for line: %s", err, line)
+		} else {
+			validJSONLines++
 		}
+	}
+
+	if validJSONLines == 0 {
+		t.Error("Expected at least one valid JSON log line")
 	}
 
 	t.Logf("Log output: %s", logOutput)

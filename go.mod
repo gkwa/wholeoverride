@@ -1,6 +1,8 @@
 module github.com/gkwa/wholeoverride
 
-go 1.23.1
+go 1.24.0
+
+toolchain go1.24.4
 
 require (
 	github.com/fatih/color v1.18.0
@@ -52,7 +54,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/net v0.39.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

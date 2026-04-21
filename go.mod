@@ -13,7 +13,7 @@ require (
 	github.com/google/go-containerregistry v0.21.5
 	github.com/gosimple/slug v1.15.0
 	github.com/magefile/mage v1.17.1
-	github.com/rs/zerolog v1.35.0
+	github.com/rs/zerolog v1.35.1
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/yuin/goldmark v1.8.2

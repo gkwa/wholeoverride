@@ -19,7 +19,7 @@ require (
 	github.com/yuin/goldmark v1.8.7
 	github.com/yuin/goldmark-meta v1.1.0
 	github.com/yuin/goldmark-meta/v2 v2.0.3
-	github.com/yuin/goldmark/v2 v2.1.15
+	github.com/yuin/goldmark/v2 v2.1.16
 	go.uber.org/zap v1.28.0
 	sigs.k8s.io/controller-runtime v0.25.2
 )
